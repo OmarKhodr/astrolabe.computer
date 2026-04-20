@@ -42,12 +42,33 @@
       to   { transform: translate(420px, 420px); }
     }
 
-    /* Blue radial glow */
-    .glow {
+    /* Corner glows — plus-lighter matches the SVG design exactly */
+    .glow-tl, .glow-br {
       position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(21, 94, 199, 0.28) 0%, transparent 75%);
+      width: 65vmax;
+      height: 50vmax;
+      border-radius: 50%;
+      background: #155EC7;
+      mix-blend-mode: plus-lighter;
+      filter: blur(200px);
       pointer-events: none;
+      z-index: 1;
+    }
+    .glow-tl { top: -30vmax;    left: -18vmax; }
+    .glow-br { bottom: -30vmax; right: -18vmax; }
+
+    /* Dark diagonal band — mirrors the rotated dark ellipse in the SVG */
+    .dark-band {
+      position: fixed;
+      width: 250vw;
+      height: 40vh;
+      left: -75vw;
+      bottom: 18vh;
+      background: rgba(21, 21, 21, 0.78);
+      filter: blur(80px);
+      transform: rotate(-37deg);
+      pointer-events: none;
+      z-index: 2;
     }
 
     /* Logo */
@@ -65,7 +86,9 @@
 </head>
 <body>
   <div class="stars"></div>
-  <div class="glow"></div>
+  <div class="glow-tl"></div>
+  <div class="glow-br"></div>
+  <div class="dark-band"></div>
 
   <div class="logo-wrap">
     <img src="img/logo.png" alt="Astrolabe Computer">
