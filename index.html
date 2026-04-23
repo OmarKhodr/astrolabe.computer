@@ -36,12 +36,8 @@
       background-image: url('img/twins.svg');
       background-size: 420px 420px;
       opacity: 0.18;
-      animation: drift 120s linear infinite;
-    }
-
-    @keyframes drift {
-      from { transform: translate(0, 0); }
-      to   { transform: translate(420px, 420px); }
+      pointer-events: none;
+      will-change: transform;
     }
 
     /* Corner glows — radial gradient replaces blur(200px), same look, zero GPU cost */
@@ -96,5 +92,31 @@
   <div class="logo-wrap">
     <img src="img/logo-3.svg" alt="Astrolabe Computer">
   </div>
+  <script>
+    (function () {
+      const el = document.querySelector('.stars');
+      // Width of the background image, also the distance after which the
+      // pattern repeats, so we can loop the animation seamlessly.
+      const TILE = 420; // px 
+      const SPEED = 3.5; // px/s — 420px / 120s
+      let x = 0, y = 0, lastTime = undefined;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+      }
+
+      function frame(ts) {
+        if (!lastTime) lastTime = ts;
+        const dt = Math.min((ts - lastTime) / 1000, 0.05);
+        x = (x + SPEED * dt) % TILE;
+        y = (y + SPEED * dt) % TILE;
+        el.style.transform = `translate(${x}px, ${y}px)`;
+        lastTime = ts;
+        requestAnimationFrame(frame);
+      }
+
+      requestAnimationFrame(frame);
+    })();
+  </script>
 </body>
 </html>
